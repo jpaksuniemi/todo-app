@@ -1,7 +1,7 @@
 package com.jpaksuniemi.notes.service;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,10 +31,10 @@ public class UserService {
     public ResponseEntity<?> createUser(User user) {
         System.out.println("user received " + user.getUsername());
         if (userRepository.existsByUsername(user.getUsername())) {
-            return ResponseEntity.status(409).body(Collections.singletonMap("message", "Username already taken!"));
+            return ResponseEntity.status(409).body(Map.of("message", "Username already taken!"));
         }
         userRepository.save(user);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(Map.of("message", "Registered succesfully"));
     }
 
     public void deleteUser(Integer id) {
