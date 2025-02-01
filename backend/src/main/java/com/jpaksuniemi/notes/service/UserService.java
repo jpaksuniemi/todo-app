@@ -2,6 +2,7 @@ package com.jpaksuniemi.notes.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,10 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     public ResponseEntity<?> createUser(User user) {
         System.out.println("user received " + user.getUsername());
         if (userRepository.existsByUsername(user.getUsername())) {
@@ -40,4 +45,5 @@ public class UserService {
     public void deleteUser(Integer id) {
         userRepository.deleteById(id);
     }
+
 }
