@@ -2,6 +2,7 @@ import { AxiosError } from "axios";
 import React, { FormEvent, useState } from "react"
 import userService from "./services/userService";
 import { User, UserInformation } from "./interfaces";
+import noteService from "./services/noteService";
 
 export const Login = ({setUser}: { setUser: React.Dispatch<React.SetStateAction<User | null>> }) => {
   const [username, setUsername] = useState<string>(""); 
@@ -19,6 +20,7 @@ export const Login = ({setUser}: { setUser: React.Dispatch<React.SetStateAction<
       console.log(response);
       alert("Login succesful!");
       setUser(response);
+      noteService.setToken(response.token); 
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response) {

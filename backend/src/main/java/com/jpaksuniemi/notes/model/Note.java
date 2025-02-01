@@ -1,5 +1,10 @@
 package com.jpaksuniemi.notes.model;
 
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,9 +30,15 @@ public class Note {
     @Column(name = "content")
     private String content;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Column(name = "date_created")
+    private LocalDate dateCreated = LocalDate.now();
+
+    public Note() {}
 
     public Integer getId() {
         return id;
