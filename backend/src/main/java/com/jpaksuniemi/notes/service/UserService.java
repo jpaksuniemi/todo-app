@@ -1,5 +1,6 @@
 package com.jpaksuniemi.notes.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class UserService {
     public ResponseEntity<?> createUser(User user) {
         System.out.println("user received " + user.getUsername());
         if (userRepository.existsByUsername(user.getUsername())) {
-            return ResponseEntity.badRequest().body("Username is already taken.");
+            return ResponseEntity.status(409).body(Collections.singletonMap("message", "Username already taken!"));
         }
         userRepository.save(user);
         return ResponseEntity.ok(user);
