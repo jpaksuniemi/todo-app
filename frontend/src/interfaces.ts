@@ -1,8 +1,9 @@
 export interface User {
     username: string,
+    token: string
 }
 
-export interface NewUser {
+export interface UserInformation {
     username: string,
     password: string
 }

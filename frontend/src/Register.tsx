@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import userService from "./services/userService";
-import { NewUser } from "./interfaces";
+import { UserInformation } from "./interfaces";
 
 export const Register = () => {
   const [username, setUsername] = useState<string>("");
@@ -13,7 +13,7 @@ export const Register = () => {
     if (password !== passwordVerify) {
       setMessage("Passwords don't match!");
     } else {
-      const newUser: NewUser = {
+      const newUser: UserInformation = {
         username,
         password
       }
@@ -55,7 +55,7 @@ export const Register = () => {
           required
         />
         <br />
-        <button type="submit">Submit</button>
+        <button type="submit">Register</button>
         {message}
       </form>
     </div>
