@@ -1,14 +1,12 @@
 package com.jpaksuniemi.notes.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,7 +37,9 @@ public class User {
 
     @JsonIgnore
     @Column(name = "registration_date", updatable = false)
-    private LocalDate registrationDate;
+    private LocalDate registrationDate = LocalDate.now();
+
+    public User() {}
 
     public User(String name, String password) {
         this.username = name;
@@ -73,6 +73,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "username: " + username;
+        return "username: '" + username + "' password: '" + password + "'";
     }
 }

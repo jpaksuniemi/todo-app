@@ -33,13 +33,14 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody User loginUser) {
         Optional<User> user = userService.findByUsername(loginUser.getUsername());
-        if (user.isPresent() && user.get().getPassword() == loginUser.getPassword()) {
+        System.out.println(user.get() + loginUser.toString() + " ispresent: " + user.isPresent());
+        if (user.isPresent() && user.get().getPassword().equals(loginUser.getPassword())) {
             String token = jwtUtil.generateToken(loginUser.getUsername());
             return ResponseEntity.ok().body(
                 Map.of("username", user.get().getUsername(),
                        "token", token));
         } else {
-            return ResponseEntity.badRequest().body(Map.of("username", "Invalid credentials!", "token", ""));
+            return ResponseEntity.badRequest().body(Map.of("message", "Invalid credentials!"));
         }
     }
 }

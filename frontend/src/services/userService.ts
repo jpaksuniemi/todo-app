@@ -13,8 +13,9 @@ async function getAll():Promise<User[] | null> {
     }
 }
 
-async function loginUser(user: UserInformation):Promise<User | string> {
-    return "unimplemented";
+async function loginUser(user: UserInformation):Promise<User> {
+    const response = await axios.post(`${BASE_AUTH_URL}/login`, user);
+    return response.data;
 }
 
 async function registerUser(user: UserInformation):Promise<string> {
@@ -44,4 +45,4 @@ async function isUsernameAvailable(username: string):Promise<string> {
     }
 }
 
-export default { getAll, registerUser, isUsernameAvailable }
+export default { getAll, loginUser, registerUser, isUsernameAvailable }

@@ -1,27 +1,14 @@
-import { FormEvent, useState } from 'react'
-import userService from './services/userService';
+import { useState } from 'react'
 import { User } from './interfaces';
-import { Register } from './Register';
+import { Authentication } from './Authentication';
 
 const App = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState<User | null>(null); 
   
-  const submitUserForm = (e: FormEvent) => {
-    e.preventDefault();
-    const newUser: Object = { username, password };
-    console.log(newUser);
-    
-    userService
-      .post(newUser)
-      .then((response: string | User) => {
-        console.log(response);
-      })
-  }
-
   return (
     <div>
-      <Register />
+      <h1>Notes</h1>
+      {!user && <Authentication setUser={setUser} />}
     </div>
   )
 }
