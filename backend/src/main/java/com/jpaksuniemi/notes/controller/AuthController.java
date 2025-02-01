@@ -39,7 +39,7 @@ public class AuthController {
                 Map.of("username", user.get().getUsername(),
                        "token", token));
         } else {
-            return ResponseEntity.badRequest().body(Map.of("message", "Invalid credentials!"));
+            return ResponseEntity.badRequest().body(Map.of("username", "Invalid credentials!", "token", ""));
         }
     }
 }

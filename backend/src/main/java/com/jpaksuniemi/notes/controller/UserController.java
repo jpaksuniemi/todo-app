@@ -1,7 +1,7 @@
 package com.jpaksuniemi.notes.controller;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +34,7 @@ public class UserController {
     @GetMapping("/getavailability/{username}")
     public ResponseEntity<?> getUsernameAvailability(@PathVariable String username) {
         boolean exists = userService.isUsernameAvailable(username);
-        return ResponseEntity.ok(Collections.singletonMap("exists", exists));
+        return ResponseEntity.ok(Map.of("exists", exists));
     }
 
     @DeleteMapping("/{id}")
