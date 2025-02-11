@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Note } from "../interfaces";
+import { NewNote } from "../interfaces";
 const BASE_URL = "http://localhost:8080/notes";
 
 let token: string | null = null;
@@ -14,4 +14,16 @@ async function getAllNotes() {
     return response.data;
 }
 
-export default { setToken, getAllNotes }
+async function postNote(note: NewNote) {
+    const response = await axios.post(BASE_URL, note, {headers: { Authorization: token }});
+    console.log("from service: ", response);
+    return response.data;
+}
+
+async function deleteNote(noteId: number): Promise<string> {
+    const response = await axios.delete(`${BASE_URL}/${noteId}`, {headers: { Authorization: token }});
+    console.log("from service: ", response);
+    return response.data.message;
+}
+
+export default { setToken, deleteNote, getAllNotes, postNote }

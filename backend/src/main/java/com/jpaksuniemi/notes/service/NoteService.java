@@ -32,4 +32,17 @@ public class NoteService {
     public Note createNote(Note note) {
         return noteRepository.save(note);
     }
+
+    public void removeNote(Integer id) {
+        noteRepository.deleteById(id);
+    }
+
+    public boolean isOwnerOfNote(String username, Integer noteId) {
+        Optional<User> owner = userRepository.findByUsername(username);
+        if (owner.isPresent()) {
+            return noteRepository.findByUser(owner.get()).stream()
+                    .anyMatch(note -> note.getId().equals(noteId));
+        }
+        return false;
+    }
 }

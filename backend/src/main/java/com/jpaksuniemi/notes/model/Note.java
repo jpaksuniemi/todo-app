@@ -40,6 +40,12 @@ public class Note {
 
     public Note() {}
 
+    public Note(String title, String content, User owner) {
+        this.title = title;
+        this.content = content;
+        this.user = owner;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -54,6 +60,25 @@ public class Note {
 
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(title).append("\n").append(content).append("\n").append(dateCreated).append("\n").append("OWNER OF NOTE: " + user);
+        return sb.toString();
     }
 
 

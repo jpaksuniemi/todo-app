@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react'
-import { Note, User } from './interfaces';
+import { FormEvent, useEffect, useState } from 'react'
+import { NewNote, ReceivedNote, User } from './interfaces';
 import { Authentication } from './Authentication';
 import noteService from './services/noteService';
 import { AxiosError } from 'axios';
 
-const Notes = () => {
-  const [notes, setNotes] = useState<Note[]>([]);
+const Notes = ({user}: {user: User}) => {
+  const [notes, setNotes] = useState<ReceivedNote[]>([]);
   const [message, setMessage] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
 
-  const fetchNotes = async () => {
+  const fetchNotes = async (): Promise<void> => {
     try {
-      const notes: Note[] = await noteService.getAllNotes();
+      const notes: ReceivedNote[] = await noteService.getAllNotes();
       console.log(notes);
       setNotes(notes);
     } catch (error) {
@@ -26,21 +28,97 @@ const Notes = () => {
     } 
   }
 
+  const getCurrentDate = (): string => {
+    const date: Date = new Date();
+    const month: number = date.getMonth() + 1;
+    return `${date.getDate}-${month}-${date.getFullYear}`
+  }
+
   useEffect(() => {
     fetchNotes();
   }, [])
 
+  const handleDelete = async (noteId: number): Promise<void> => {
+    try {
+      const response: string = await noteService.deleteNote(noteId);
+      setNotes(notes.filter((note: ReceivedNote) => note.id !== noteId));
+      setMessage(response);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          setMessage(error.response.data.message);
+        } else if (error.request) {
+          setMessage("No response from server");
+        }
+      } else {
+        setMessage("Unknown error occured");
+      }
+    }
+
+  }
+  
+  const handleSubmit = async (e: FormEvent): Promise<void> => {
+    e.preventDefault() 
+    try {
+      const newNote: NewNote = {
+        title,
+        content,
+        date_created: getCurrentDate(),
+        user_id: user.id
+      }
+      const response: ReceivedNote = await noteService.postNote(newNote);
+      setNotes(notes.concat(response));
+      setMessage("New note added succesfully")
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          setMessage(error.response.data.message);
+        } else if (error.request) {
+          setMessage("No response from server");
+        }
+      }
+    }
+  }
+
   return (
     <div>
-      {message}
-      <ul>
         {
-          notes.map((note: Note) => <li key={note.id}>{note.title} {note.content}</li>)
+          notes.map((note: ReceivedNote) => (
+            <Note note={note} deleteHandler={handleDelete}/>
+            ))
         }
-      </ul>
+      <br />
+      <form onSubmit={handleSubmit}>
+        <label>Title:</label>
+        <input type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
+        <br />
+        <label>Content:</label>
+        <input type="text" 
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          required
+        />
+        <br />
+        <button type='submit'>Create new note</button>
+      </form>
+      {message}
     </div>
   )
 }
+
+const Note = ({note, deleteHandler}: {note: ReceivedNote, deleteHandler: (id: number) => void}) => (
+  <>
+    <h3>{note.title} - {note.date_created}</h3>
+    {note.content}
+    <button onClick={() => deleteHandler(note.id)}>
+      Delete note
+    </button>
+  </>
+)
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null); 
@@ -49,7 +127,7 @@ const App = () => {
     <div>
       <h1>Notes</h1>
       {!user && <Authentication setUser={setUser} />}
-      {user && <Notes/>}
+      {user && <Notes user={user}/>}
     </div>
   )
 }
