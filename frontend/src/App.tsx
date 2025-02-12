@@ -28,12 +28,6 @@ const Notes = ({user}: {user: User}) => {
     } 
   }
 
-  const getCurrentDate = (): string => {
-    const date: Date = new Date();
-    const month: number = date.getMonth() + 1;
-    return `${date.getDate}-${month}-${date.getFullYear}`
-  }
-
   useEffect(() => {
     fetchNotes();
   }, [])
@@ -63,7 +57,6 @@ const Notes = ({user}: {user: User}) => {
       const newNote: NewNote = {
         title,
         content,
-        date_created: getCurrentDate(),
         user_id: user.id
       }
       const response: ReceivedNote = await noteService.postNote(newNote);
@@ -82,37 +75,38 @@ const Notes = ({user}: {user: User}) => {
 
   return (
     <div>
-        {
-          notes.map((note: ReceivedNote) => (
-            <Note note={note} deleteHandler={handleDelete}/>
-            ))
-        }
-      <br />
       <form onSubmit={handleSubmit}>
-        <label>Title:</label>
-        <input type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        <br />
-        <label>Content:</label>
-        <input type="text" 
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          required
-        />
-        <br />
-        <button type='submit'>Create new note</button>
-      </form>
+      <label>Title:</label>
+      <input type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+      />
+      <br />
+      <label>Content:</label>
+      <input type="text" 
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        required
+      />
+      <br />
+      <button type='submit'>Create new note</button>
       {message}
+      </form>
+      <p>Welcome user: {user.username}</p> 
+      {
+        notes.map((note: ReceivedNote) => (
+          <Note note={note} deleteHandler={handleDelete}/>
+        ))
+      }
+      <br />
     </div>
   )
 }
 
 const Note = ({note, deleteHandler}: {note: ReceivedNote, deleteHandler: (id: number) => void}) => (
   <>
-    <h3>{note.title} - {note.date_created}</h3>
+    <h3>{note.title} - {note.dateCreated}</h3>
     {note.content}
     <button onClick={() => deleteHandler(note.id)}>
       Delete note

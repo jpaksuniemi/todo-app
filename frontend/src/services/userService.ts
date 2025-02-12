@@ -1,5 +1,5 @@
 import axios from "axios";
-import { User, UserInformation } from "../interfaces";
+import { User, NewUser } from "../interfaces";
 
 const BASE_USER_URL: string = "http://localhost:8080/users";
 const BASE_AUTH_URL: string = "http://localhost:8080/auth";
@@ -13,12 +13,12 @@ async function getAll():Promise<User[] | null> {
     }
 }
 
-async function loginUser(user: UserInformation):Promise<User> {
+async function loginUser(user: NewUser):Promise<User> {
     const response = await axios.post(`${BASE_AUTH_URL}/login`, user);
     return response.data;
 }
 
-async function registerUser(user: UserInformation):Promise<string> {
+async function registerUser(user: NewUser):Promise<string> {
     try {
         const response = await axios.post(`${BASE_AUTH_URL}/register`, user, { validateStatus: function (status) {
             return status < 500;

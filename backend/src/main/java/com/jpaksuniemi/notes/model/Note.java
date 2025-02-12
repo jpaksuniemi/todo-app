@@ -3,7 +3,6 @@ package com.jpaksuniemi.notes.model;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,6 +43,7 @@ public class Note {
         this.title = title;
         this.content = content;
         this.user = owner;
+        this.dateCreated = LocalDate.now();
     }
 
     public Integer getId() {
@@ -62,6 +62,10 @@ public class Note {
         return user;
     }
 
+    public LocalDate getDateCreated() {
+        return dateCreated;
+    }
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -72,6 +76,10 @@ public class Note {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setDateCreated(LocalDate dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     @Override

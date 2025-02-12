@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import React, { FormEvent, useState } from "react"
 import userService from "./services/userService";
-import { User, UserInformation } from "./interfaces";
+import { User, NewUser } from "./interfaces";
 import noteService from "./services/noteService";
 
 export const Login = ({setUser}: { setUser: React.Dispatch<React.SetStateAction<User | null>> }) => {
@@ -11,7 +11,7 @@ export const Login = ({setUser}: { setUser: React.Dispatch<React.SetStateAction<
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const loginUser: UserInformation = {
+    const loginUser: NewUser = {
       username,
       password
     }

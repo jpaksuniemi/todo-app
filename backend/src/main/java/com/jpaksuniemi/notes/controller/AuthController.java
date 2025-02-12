@@ -3,6 +3,7 @@ package com.jpaksuniemi.notes.controller;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,13 +18,11 @@ import com.jpaksuniemi.notes.util.JwtUtil;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService userService;
-    private final JwtUtil jwtUtil;
+    @Autowired
+    private UserService userService;
 
-    public AuthController(UserService userService, JwtUtil jwtUtil) {
-        this.userService = userService;
-        this.jwtUtil = jwtUtil;
-    }
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {

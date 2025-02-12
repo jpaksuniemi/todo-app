@@ -8,7 +8,7 @@ export interface ReceivedNote {
     id: number,
     title: string,
     content: string,
-    date_created: string
+    dateCreated: string
 }
 
 export interface NewUser {
@@ -19,6 +19,5 @@ export interface NewUser {
 export interface NewNote {
     title: string,
     content: string,
-    date_created: string,
     user_id: number
 }
